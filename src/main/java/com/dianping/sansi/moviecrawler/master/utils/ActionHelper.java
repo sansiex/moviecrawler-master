@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 /**
  * Created by sansi on 2014/5/9.
  */
-public class ServletHelper {
+public class ActionHelper {
     public static String getRemoteAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || ip.equalsIgnoreCase("unknown")) {

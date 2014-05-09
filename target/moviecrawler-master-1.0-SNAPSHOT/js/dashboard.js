@@ -14,9 +14,9 @@ function append(content){
 }
 
 function send(){
-    var url="log/stdout";
-    http.post(url,{content:'test stdout content'},function(data){
-        Console.log(data);
+    var url="log/write?method=write";
+    http.post(url,{slaveId:2,content:'test stdout content'},function(data){
+        display(data);
     })
 }
 

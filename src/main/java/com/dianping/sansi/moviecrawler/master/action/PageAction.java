@@ -10,11 +10,13 @@ public class PageAction extends ActionSupport {
 
     private String forward;
 
+    private final String REDIRECT="redirect";
+
     public String redirect(){
         if(page!=null){
             forward=page;
         }
-        return SUCCESS;
+        return REDIRECT;
     }
 
     public String getPage() {

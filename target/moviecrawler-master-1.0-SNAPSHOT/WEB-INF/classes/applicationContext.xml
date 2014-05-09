@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
       http://www.springframework.org/schema/tx
@@ -12,12 +12,14 @@
       http://www.springframework.org/schema/util
       http://www.springframework.org/schema/util/spring-util.xsd">
 
+    <!--
+    <context:annotation-config />
+    <context:component-scan base-package="com.dianping.sansi.moviecrawler.master.action" />
+    -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="url" value="jdbc:mysql://192.168.7.105:3306/TuanGou2010?characterEncoding=utf-8"/>
-
         <property name="password" value="dp!@OpQW34bn"/>
         <property name="username" value="aspnet_dianping"/>
-
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
     </bean>
 
@@ -71,8 +73,7 @@
         </property>
     </bean>
 
-    <bean
-            class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
         <property name="beanNames">
             <list>
                 <!-- TODO questionService -->
@@ -86,7 +87,13 @@
         </property>
     </bean>
 
-    <!-- service and dao -->
+    <!-- action, service and dao -->
+    <bean id="logAction" class="com.dianping.sansi.moviecrawler.master.action.LogAction">
+        <property name="logService">
+            <ref bean="logService" />
+        </property>
+    </bean>
+
     <bean id="logService"
           class="com.dianping.sansi.moviecrawler.master.service.LogService">
         <property name="logEntryDao">

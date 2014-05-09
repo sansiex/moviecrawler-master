@@ -14,7 +14,7 @@
     </package>
 
     <package name="log" extends="json-default" namespace="/log">
-        <action name="write" class="com.dianping.sansi.moviecrawler.master.action.LogAction">
+        <action name="write" class="com.dianping.sansi.moviecrawler.master.action.LogAction" method="write">
             <result type="json"/>
         </action>
 

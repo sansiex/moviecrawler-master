@@ -6,7 +6,7 @@
 
     <%@ include file="common/ref.jsp" %>
 
-    <script src="../js/dashboard.js"></script>
+    <script src="js/dashboard.js"></script>
 </head>
 <body>
     <h3>Movie Crawler Dashboard</h3>
