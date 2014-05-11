@@ -10,6 +10,9 @@ import org.apache.struts2.json.annotations.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +52,12 @@ public class ControllerAction extends ActionSupport implements ServletRequestAwa
         System.out.println("finish:slaveId="+slaveId+"&lastFetchedId="+lastFetchedId);
         CrawlerScheduler cs=CrawlerScheduler.getInstance();
         params= cs.finish(slaveId);
+        return SUCCESS;
+    }
+
+    public String startTask(){
+        CrawlerScheduler cs=CrawlerScheduler.getInstance();
+        params=cs.startTask();
         return SUCCESS;
     }
 

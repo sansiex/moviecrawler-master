@@ -3,19 +3,27 @@ package com.dianping.sansi.moviecrawler.master.controller;
 import com.dianping.sansi.moviecrawler.master.action.CommandFactory;
 import com.dianping.sansi.moviecrawler.master.utils.JsonUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by sansi on 2014/5/9.
  */
 public class CrawlerScheduler {
+    private static final long FIRST=24*60*60*1000;
+    private static final long PERIOD=24*60*60*1000;
+
     private CrawlerScheduler(){
         size=CrawlerConfig.getInstance().size;
         taskSize=size;
         crawlers=new Crawler[size];
+
+        Timer taskTimer=new Timer();
+        taskTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                CrawlerScheduler.getInstance().startTask();
+            }
+        },FIRST,PERIOD);
     }
     private static CrawlerScheduler instance=new CrawlerScheduler();
     public static CrawlerScheduler getInstance(){
@@ -33,12 +41,12 @@ public class CrawlerScheduler {
     private Crawler[] crawlers;
 
     public int connect(int slaveId,Long lastFetchedId,String ip){
-        for(Crawler crawler:crawlers){
-            if(crawler!=null && crawler.ip.equals(ip)){
-                touch(crawler.id);
-                return crawler.id;
-            }
-        }
+//        for(Crawler crawler:crawlers){
+//            if(crawler!=null && crawler.ip.equals(ip)){
+//                touch(crawler.id);
+//                return crawler.id;
+//            }
+//        }
 
         if(slaveId==-1){
             Crawler crawler=createCrawler(ip);
@@ -61,7 +69,7 @@ public class CrawlerScheduler {
 
     public HashMap<String,String> touch(int id){
         Crawler crawler=crawlers[id];
-        //System.out.println("touch:size="+size+"&task="+currentTask+"&finish="+finish+"&c="+JsonUtils.toJson(crawler));
+        System.out.println("touch:size="+size+"&task="+currentTask+"&taskSize="+taskSize+"&finish="+finish+"&c="+JsonUtils.toJson(crawler));
         crawler.lastTouch=new Date();
         if(crawler.status==Crawler.STATUS_DISCONNECT){
             crawler.status=Crawler.STATUS_WAIT;
@@ -109,6 +117,30 @@ public class CrawlerScheduler {
         }
 
         return CommandFactory.createCommand(CommandFactory.TYPE_WAIT,crawler,this);
+    }
+
+    public HashMap<String,String> startTask(){
+        HashMap<String,String> params=new HashMap<>();
+        if(currentTask!=Crawler.TASK_FINISH){
+            params.put("code","1");
+            params.put("message","Tasks is not finished");
+            System.out.println("Cannot start new task. Current task is not finished");
+            return params;
+        }
+
+        System.out.println("Start new task.");
+        for (Crawler c:crawlers){
+            c.status=Crawler.STATUS_NEW;
+            c.task=0;
+            c.lastFetchedId=0;
+            c.taskPartition=0;
+        }
+
+        this.taskSize=size;
+        this.currentTask=0;
+
+        params.put("code","0");
+        return params;
     }
     
     private Crawler createCrawler(String ip){

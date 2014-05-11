@@ -35,6 +35,10 @@
         <action name="finish" class="com.dianping.sansi.moviecrawler.master.action.ControllerAction" method="finish">
             <result type="json"/>
         </action>
+
+        <action name="startTask" class="com.dianping.sansi.moviecrawler.master.action.ControllerAction" method="startTask">
+            <result type="json"/>
+        </action>
     </package>
 </struts>
  	

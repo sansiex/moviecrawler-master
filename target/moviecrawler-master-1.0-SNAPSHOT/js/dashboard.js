@@ -29,8 +29,9 @@ function send(){
 }
 
 function loadRecent(){
+    var date = new Date();
     var url="log/load";
-    http.post(url,{start:"2014/5/11 15:23:00", end:"2014/5/11 15:28:00"},function(data){
+    http.post(url,{start:date2String(date), end:date2String(date)},function(data){
         display(data);
     })
 }
@@ -41,5 +42,18 @@ function loadLog(){
     var end=$('#end')[0].value;
     http.post(url,{start:start, end:end},function(data){
         display(data);
+    })
+}
+
+function startTask(){
+    var url="controller/startTask";
+    http.post(url,{},function(data){
+        var params=data.params;
+        var code=params.code;
+        if(code==0){
+            display("Task starts.");
+        }else{
+            display("There ia still a task running.");
+        }
     })
 }
