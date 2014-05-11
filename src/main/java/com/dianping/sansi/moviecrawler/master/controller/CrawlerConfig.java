@@ -18,15 +18,17 @@ public class CrawlerConfig {
         return instance;
     }
 
-    private static final URL FILEPATH= CrawlerConfig.class.getResource("/crawler-master.xml");
+    private static final URL FILEPATH=CrawlerConfig.class.getResource("/crawler-master.xml");
+
     public int size=-1;
 
     private void init(){
         Document doc=null;
         SAXReader reader=new SAXReader();
         try {
-            System.out.println(FILEPATH.getPath());
-            doc=reader.read(FILEPATH);
+            URL fp=CrawlerConfig.class.getResource("/crawler-master.xml");
+            System.out.println(fp.getPath());
+            doc=reader.read(fp);
         } catch (DocumentException e) {
             e.printStackTrace();
         }

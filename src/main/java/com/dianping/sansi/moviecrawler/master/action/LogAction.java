@@ -3,6 +3,7 @@ package com.dianping.sansi.moviecrawler.master.action;
 import com.dianping.sansi.moviecrawler.master.model.LogEntry;
 import com.dianping.sansi.moviecrawler.master.service.LogService;
 import com.dianping.sansi.moviecrawler.master.utils.ActionHelper;
+import com.dianping.sansi.moviecrawler.master.utils.DateUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.json.annotations.JSON;
@@ -42,7 +43,7 @@ public class LogAction extends ActionSupport implements ServletRequestAware {
     }
 
     public String load(){
-        List<LogEntry> list=logService.findByRange(start,end);
+        list=logService.findByRange(start,end);
         return SUCCESS;
     }
 
@@ -58,12 +59,12 @@ public class LogAction extends ActionSupport implements ServletRequestAware {
         this.slaveId = slaveId;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd(String end) {
+        this.end = DateUtils.string2Date(end,"yyyy/MM/dd HH:mm:ss");
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStart(String start) {
+        this.start = DateUtils.string2Date(start,"yyyy/MM/dd HH:mm:ss");;
     }
 
     @JSON(name="success")

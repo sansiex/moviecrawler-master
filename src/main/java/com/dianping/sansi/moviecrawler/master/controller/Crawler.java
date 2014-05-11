@@ -9,8 +9,9 @@ public class Crawler {
     public int id;
     public String ip;
     public int status;//running or stop
-    public int mission;//scraping what data
+    public int task;//running what task
     public long lastFetchedId;
+    public int taskPartition;
     public Date lastTouch;
 
     public static final int STATUS_NEW=0;
@@ -18,8 +19,8 @@ public class Crawler {
     public static final int STATUS_WAIT=2;
     public static final int STATUS_DISCONNECT=3;
 
-    public static final int MISSION_IDLE=-1;
-    public static final int MISSION_CINEMA=1;
-    public static final int MISSION_SCHEDULE=2;
-    public static final int MISSION_FINISH=3;
+    public static final int TASK_IDLE=0;
+    public static final int TASK_CINEMA=1;
+    public static final int TASK_SCHEDULE=2;
+    public static final int TASK_FINISH=3;
 }

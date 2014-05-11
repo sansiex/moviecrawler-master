@@ -26,7 +26,7 @@ public class LogEntry {
         this.id = id;
     }
 
-    @Column(name = "content")
+    @Column(name = "content", length=500)
     public String getContent() {
         return content;
     }

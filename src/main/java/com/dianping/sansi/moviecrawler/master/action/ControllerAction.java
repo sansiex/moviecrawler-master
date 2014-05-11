@@ -1,5 +1,6 @@
 package com.dianping.sansi.moviecrawler.master.action;
 
+import com.dianping.sansi.moviecrawler.master.controller.CrawlerScheduler;
 import com.dianping.sansi.moviecrawler.master.model.LogEntry;
 import com.dianping.sansi.moviecrawler.master.service.LogService;
 import com.dianping.sansi.moviecrawler.master.utils.ActionHelper;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -17,19 +19,36 @@ import java.util.List;
  */
 public class ControllerAction extends ActionSupport implements ServletRequestAware {
     private boolean success = true;
+    private HashMap<String,String> params=new HashMap<>();
 
     private HttpServletRequest request;
 
-    private Integer slaveId;
+    private int slaveId;
     private Long lastFetchedId;
 
     @Autowired
     private LogService logService;
 
     public String connect(){
+        System.out.println("connect:slaveId="+slaveId+"&lastFetchedId="+lastFetchedId);
+        String ip=ActionHelper.getRemoteAddress(request);
+        CrawlerScheduler cs=CrawlerScheduler.getInstance();
+        int id=cs.connect(slaveId,lastFetchedId,ip);
+        params=new HashMap<>();
+        params.put("slaveId",String.valueOf(id));
+        return SUCCESS;
+    }
 
+    public String touch(){
+        CrawlerScheduler cs=CrawlerScheduler.getInstance();
+        params=cs.touch(slaveId);
+        return SUCCESS;
+    }
 
-
+    public String finish(){
+        System.out.println("finish:slaveId="+slaveId+"&lastFetchedId="+lastFetchedId);
+        CrawlerScheduler cs=CrawlerScheduler.getInstance();
+        params= cs.finish(slaveId);
         return SUCCESS;
     }
 
@@ -42,8 +61,21 @@ public class ControllerAction extends ActionSupport implements ServletRequestAwa
         return success;
     }
 
+    @JSON(name="params")
+    public HashMap<String, String> getParams() {
+        return params;
+    }
+
     @Override
     public void setServletRequest(HttpServletRequest httpServletRequest) {
         this.request = httpServletRequest;
+    }
+
+    public void setSlaveId(int slaveId) {
+        this.slaveId = slaveId;
+    }
+
+    public void setLastFetchedId(Long lastFetchedId) {
+        this.lastFetchedId = lastFetchedId;
     }
 }
