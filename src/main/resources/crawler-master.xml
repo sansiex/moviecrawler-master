@@ -1,0 +1,10 @@
+<crawler-master>
+    <slaves>
+        <slave>
+            <ip>127.0.0.1</ip>
+        </slave>
+        <slave>
+            <ip>127.0.0.1</ip>
+        </slave>
+    </slaves>
+</crawler-master>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.action.excludePattern" value="" />
+	<constant name="struts.action.extension" value="," />
+	<constant name="struts.custom.i18n.resources" value="messages" />
+    <!-- 开发模式下使用,这样可以打印出更详细的错误信息
+    <constant name="struts.devMode" value="true" />
+    -->
+    <package name="page" extends="struts-default" namespace="/page">
+        <action name="page" class="com.dianping.sansi.moviecrawler.master.action.PageAction" method="redirect">
+            <result name="redirect" type="redirect">/page/${forward}.jsp</result>
+        </action>
+    </package>
+
+    <package name="log" extends="json-default" namespace="/log">
+        <action name="write" class="com.dianping.sansi.moviecrawler.master.action.LogAction" method="write">
+            <result type="json"/>
+        </action>
+
+        <action name="load" class="com.dianping.sansi.moviecrawler.master.action.LogAction" method="load">
+            <result type="json"/>
+        </action>
+    </package>
+
+    <package name="controller" extends="json-default" namespace="/controller">
+        <action name="connect" class="com.dianping.sansi.moviecrawler.master.action.ControllerAction" method="connect">
+            <result type="json"/>
+        </action>
+
+        <action name="touch" class="com.dianping.sansi.moviecrawler.master.action.ControllerAction" method="touch">
+            <result type="json"/>
+        </action>
+
+        <action name="finish" class="com.dianping.sansi.moviecrawler.master.action.ControllerAction" method="finish">
+            <result type="json"/>
+        </action>
+
+        <action name="startTask" class="com.dianping.sansi.moviecrawler.master.action.ControllerAction" method="startTask">
+            <result type="json"/>
+        </action>
+    </package>
+</struts>
+ 	
